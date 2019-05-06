@@ -32,7 +32,7 @@ class form{
             if (empty($_POST["name"])) {
                 $this->nameErr = "Name is required";
             } else {
-                $this->name = test_input($_POST["name"]);
+                $this->name = $this->test_input($_POST["name"]);
                 // Checa si solamente hay letras o espacios en blanco
                 if (!preg_match("/^[a-zA-Z ]*$/",$this->name)) {
                     $this->nameErr = "Only letters and white space allowed";
@@ -41,7 +41,7 @@ class form{
             if (empty($_POST["email"])) {
                 $this->emailErr = "Email is required";
             } else {
-                $this->email = test_input($_POST["email"]);
+                $this->email = $this->test_input($_POST["email"]);
                 // Revisa si el formato de email está bien formulado
                 if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
                     $this->emailErr = "Invalid email format";
@@ -50,7 +50,7 @@ class form{
             if (empty($_POST["website"])) {
                 $this->website = "";
             } else {
-                $this->website = test_input($_POST["website"]);
+                $this->website = $this->test_input($_POST["website"]);
                 // Revisa si es una URL valida
                 if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$this->website)) {
                     $this->websiteErr = "Invalid URL";
@@ -59,13 +59,13 @@ class form{
             if (empty($_POST["comment"])) {
                 $this->comment = "";
             } else {
-                $this->comment = test_input($_POST["comment"]);
+                $this->comment = $this->test_input($_POST["comment"]);
             }
             if (empty($_POST["gender"])) {
                 //Revisa si el genero no está vacio
                 $this->genderErr = "Gender is required";
             } else {
-                $this->gender = test_input($_POST["gender"]);
+                $this->gender = $this->test_input($_POST["gender"]);
             }
         }
     }
@@ -82,43 +82,48 @@ class form{
         echo "<br>";
         echo $this->gender;
     }
+
+    public function formulario(){
+        echo "<h2>PHP Form Validation Example</h2>";
+        echo "<p><span class="."error".">* required field.</span></p>";
+        echo "<form method="."post"." action=" . htmlspecialchars($_SERVER["PHP_SELF"]) . ">";
+        echo "Name: <input type="."text"." name="."name"." value=".$this->name.">";
+        echo "<span class="."error".">* ".$this->nameErr."</span>";
+        echo "<br><br>";
+        echo "E-mail: <input type="."text"." name="."email"." value=".$this->email.">";
+        echo "<span class="."error".">* ".$this->emailErr."</span>";
+        echo "<br><br>";
+        echo "Website: <input type="."text"." name="."website"." value=".$this->website.">";
+        echo "<span class="."error".">".$this->websiteErr."</span>";
+        echo "<br><br>";
+        echo "Comment: <textarea name="."comment"." rows="."5"." cols="."40".">".$this->comment."</textarea>";
+        echo "<br><br>";
+        echo "Gender:";
+        echo "<input type="."radio"." name="."gender";
+        if (isset($this->gender) && $this->gender=="female"); echo "checked";
+        echo "value="."female".">Female";
+        echo "<input type="."radio"." name="."gender";
+        if (isset($this->gender) && $this->gender=="male") echo "checked";
+        echo "value="."male".">Male";
+        echo "<span class="."error".">* ".$this->genderErr."</span>";
+        echo "<br><br>";
+        echo "<input type="."submit"." name="."submit"." value="."Submit".">";
+        echo "</form>";
+    }
+
+    public function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
     
 }
 
 $f1 = new form();
 $f1->capturar();
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-?>
-
-<h2>PHP Form Validation Example</h2>
-<p><span class="error">* required field.</span></p>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    Name: <input type="text" name="name" value="<?php echo $f1->name;?>">
-    <span class="error">* <?php echo $f1->nameErr;?></span>
-    <br><br>
-    E-mail: <input type="text" name="email" value="<?php echo $f1->email;?>">
-    <span class="error">* <?php echo $f1->emailErr;?></span>
-    <br><br>
-    Website: <input type="text" name="website" value="<?php echo $f1->website;?>">
-    <span class="error"><?php echo $f1->websiteErr;?></span>
-    <br><br>
-    Comment: <textarea name="comment" rows="5" cols="40"><?php echo $f1->comment;?></textarea>
-    <br><br>
-    Gender:
-    <input type="radio" name="gender" <?php if (isset($f1->gender) && $f1->gender=="female") echo "checked";?> value="female">Female
-    <input type="radio" name="gender" <?php if (isset($f1->gender) && $f1->gender=="male") echo "checked";?> value="male">Male
-    <span class="error">* <?php echo $f1->genderErr;?></span>
-    <br><br>
-    <input type="submit" name="submit" value="Submit">
-</form>
-
-<?php
-    $f1->mostrar();
+$f1->formulario();
+$f1->mostrar();
 ?>
 
 <ul>
