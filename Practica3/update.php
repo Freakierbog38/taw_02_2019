@@ -1,3 +1,7 @@
+<?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,35 +22,32 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Agregar <b>Cliente</b></h2></div>
+                    <div class="col-sm-8"><h2>Actualizar <b>Cliente</b></h2></div>
                     <div class="col-sm-4">
                         <a href="index.php" class="btn btn-info add-new"><i class="fa fa-arrow-left"></i>Regresar</a>
                     </div>
                 </div>
             </div>    
             <?php
-                // Se incluye el archivo con la clase Database
                 include ("database.php");
-                // Se crea una instancia de Database
+                if(isset($_GET) && !empty($_GET)){
+                    $id = $_GET['id'];
+                }
                 $clientes = new Database();
-                // Se revisa que se enviaron datos mediante el método POST
                 if(isset($_POST) && !empty($_POST)){
-                    // Se guardan los valores enviados
+                    $id = $clientes->sanitize($_POST['id']);
                     $nombres = $clientes->sanitize($_POST['nombres']);
                     $apellidos = $clientes->sanitize($_POST['apellidos']);
                     $telefono = $clientes->sanitize($_POST['telefono']);
                     $direccion = $clientes->sanitize($_POST['direccion']);
                     $correo_electronico = $clientes->sanitize($_POST['correo_electronico']);
 
-                    // Llama al método para insertar perteneciente a la clase Database
-                    $res = $clientes->create($nombres, $apellidos, $telefono, $direccion, $correo_electronico);
+                    $res = $clientes->update($nombres, $apellidos, $telefono, $direccion, $correo_electronico, $id);
                     if($res){
-                        // Si es exitoso, muestra un mensaje
-                        $message = "Datos insertados con éxito";
+                        $message = "Datos modificados con éxito";
                         $class = "alert alert-success";
                     } else{
-                        // Si no lo es, muestra mensaje de error
-                        $message = "No se pudieron insertar los datos";
+                        $message = "No se pudieron modificar los datos";
                         $class = "alert alert-danger";
                     }
             ?>
@@ -56,29 +57,31 @@
                 <?php } ?>
             <div class="row">
                 <form method="POST">
+                    <?php $c = $clientes->single_record($id); ?>
                     <div class="col-md-6">
                         <label>Nombre:</label>
-                        <input type="text" name="nombres" id="nombres" class="form-control" maxlength="100" required>
+                        <input type="text" name="nombres" id="nombres" class="form-control" maxlength="100" value="<?php echo $c->nombres; ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label>Apellidos:</label>
-                        <input type="text" name="apellidos" id="apellidos" class="form-control" maxlength="100" required>
+                        <input type="text" name="apellidos" id="apellidos" class="form-control" maxlength="100" value="<?php echo $c->apellidos; ?>" required>
                     </div>
                     <div class="col-md-12">
                         <label>Dirección:</label>
-                        <textarea type="text" name="direccion" id="direccion" class="form-control" maxlength="255" required></textarea>
+                        <textarea type="text" name="direccion" id="direccion" class="form-control" maxlength="255" required><?php echo $c->direccion; ?></textarea>
                     </div>
                     <div class="col-md-6">
                         <label>Teléfono:</label>
-                        <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15" required>
+                        <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15" value="<?php echo $c->telefono; ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label>Correo electrónico:</label>
-                        <input type="email" name="correo_electronico" id="correo_electronico" class="form-control" maxlength="64" required>
+                        <input type="email" name="correo_electronico" id="correo_electronico" class="form-control" maxlength="64" value="<?php echo $c->correo_electronico; ?>" required>
                     </div>
+                    <input type="hidden" name="id" id="id" value="<?php echo $c->id; ?>">
                     <div class="col-md-12 pull-right">
                         <hr>
-                        <button type="submit" class="btn btn-success">Guardar Datos</button>
+                        <button type="submit" class="btn btn-success">Actualizar Datos</button>
                     </div>
                 </form>
             </div>
