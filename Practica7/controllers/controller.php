@@ -31,6 +31,31 @@ class MvcController{
 
     }
 
+    #Ingreso de maestros
+	#------------------------------------
+	#Permite controlar el ingreso al sistema ademas generando la variable cookie que almacena el tipo de usuario que es (maestro/superadmin)
+	public function ingresoMaestroController(){
+
+		if(isset($_POST["emailIngreso"])){
+			$datosController = array( "email"=>$_POST["emailIngreso"], 
+								      "password"=>$_POST["passwordIngreso"]);
+
+			$respuesta = Datos::ingresoMaestroModel($datosController, "maestros");
+			
+			//Valiación de la respuesta del modelo para ver si es un usuario correcto.
+			if($respuesta["email"] == $_POST["emailIngreso"] && $respuesta["password"] == $_POST["passwordIngreso"]){
+				session_start();
+				$_SESSION["validar"] = true;
+				$_SESSION["num_empleado"] = $respuesta["num_empleado"];
+				setcookie("nivel",$respuesta["nivel"], time() + (86400 * 30), "/");
+				header("location:index.php?action=tutorias");
+			}
+			else{
+				header("location:index.php?action=fallo");
+			}
+		}
+	}
+
     # REGISTRO DE ALUMNO
 	#------------------------------------
 	public function registroAlumnoController(){
@@ -65,6 +90,24 @@ class MvcController{
                                       "carrera"=>$_POST["carrera"]);
 
             $respuesta = Datos::registroMaestroModel($datosController, "maestros");
+
+            if($respuesta=="success"){
+                echo '<label class="col-sm-3 control-label">Registrado</label>';
+            }
+            else{
+                echo '<label class="col-sm-3 control-label">Error</label>';
+            }
+        }
+    }
+
+    # REGISTRO DE MAESTROS
+	#------------------------------------
+	public function registroCarreraController(){
+        if(isset($_POST["nombre"])){
+
+			$datosController = array( "nombre"=>$_POST["nombre"]);
+
+            $respuesta = Datos::registroCarreraModel($datosController, "carrera");
 
             if($respuesta=="success"){
                 echo '<label class="col-sm-3 control-label">Registrado</label>';
@@ -131,6 +174,29 @@ class MvcController{
 
     }
 
+    #VISTA DE CARRERA
+	#------------------------------------
+	public function vistaCarreraController(){
+
+        // Se llama al metodo de Datos para traer los registros de la tabla habitaciones
+        $respuesta = Datos::vistaTablaModel("carrera");
+
+		#El constructor foreach proporciona un modo sencillo de iterar sobre arrays. foreach funciona sólo sobre arrays y objetos, y emitirá un error al intentar usarlo con una variable de un tipo diferente de datos o una variable no inicializada.
+
+		foreach($respuesta as $row => $item){
+
+            // Se imprimen los datos, y en vez de imprimir el id de tipo se imprime su nombre que anteriormente se encontró
+		    echo'<tr>
+                    <td>'.$item["id"].'</td>
+                    <td>'.$item["nombre"].'</td>
+			    	<td><a href="index.php?action=editarCarrera&id='.$item["id"].'" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+				    <td><a href="index.php?action=listaCarrera&idBorrar='.$item["id"].'" onclick="pregunta(event)" class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+			    </tr>';
+
+		}
+
+    }
+
     #EDITAR ALUMNO
 	#------------------------------------
 	public function editarAlumnoController(){
@@ -189,6 +255,32 @@ class MvcController{
 
 		}
 
+    }
+    
+    #EDITAR CARRERA
+	#------------------------------------
+	public function editarCarreraController(){
+        // Revisa si se activó el metodo post
+		if(isset($_POST["id"])){
+            // Las variables enviadas se guardan en un array asociativo
+			$datosController = array( "id"=>$_POST["id"],
+                                      "nombre"=>$_POST["nombre"]);
+            // Y se mandan a un metodo para que se lleve acabo la actualizacion
+			$respuesta = Datos::actualizarCarreraModel($datosController, "carrera");
+            // Si la respuesta regresada en "success" significa que se realizó con exito
+			if($respuesta == "success"){
+                // Y se informa del exito obtenido
+				echo '<label class="col-sm-3 control-label">Cambio exitoso</label>';
+
+			}
+			else{
+                // En caso contrario se informa que hubo un error
+				echo '<label class="col-sm-3 control-label">Error</label>';
+
+			}
+
+		}
+
 	}
     
     #BORRAR ALUMNO
@@ -224,6 +316,26 @@ class MvcController{
 			if($respuesta == "success"){
                 // Redirecciona al listado
 				header("location:index.php?action=listaMaestro");
+			
+			}
+
+		}
+
+    }
+
+    #BORRAR CARRERA
+	#------------------------------------
+	public function borrarCarreraController(){
+        // Si se recibe el id para borrar
+		if(isset($_GET["idBorrar"])){
+            // Lo captura
+			$datosController = $_GET["idBorrar"];
+			// Y llama al método para proceder la eliminación
+			$respuesta = Datos::borrarIDModel($datosController, "carrera");
+            // y si es exitoso
+			if($respuesta == "success"){
+                // Redirecciona al listado
+				header("location:index.php?action=listaCarrera");
 			
 			}
 
