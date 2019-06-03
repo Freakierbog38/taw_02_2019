@@ -36,6 +36,12 @@ $carreras = $t->vistaTablaModel('carrera');
 									<input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico">
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="pass" class="col-sm-3 control-label">Correo Contraseña</label>
+								<div class="col-sm-5">
+									<input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña">
+								</div>
+							</div>
                             <div class="form-group">
                                 <label for="carrera" class="col-sm-3 control-label">Carrera</label>
                                 <div class="col-sm-5">
@@ -44,6 +50,15 @@ $carreras = $t->vistaTablaModel('carrera');
 										<?php foreach($carreras as $i => $item){ ?>
                                         <option value="<?php echo $item["id"]; ?>"><?php echo $item["nombre"]; ?></option>
                                         <?php } ?>
+                                    </select>
+                                </div>
+		    				</div>
+							<div class="form-group">
+                                <label for="nivel" class="col-sm-3 control-label">Nivel</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="nivel" name="nivel">
+										<option value="0">Maestro</option>
+										<option value="1">SuperAdmin</option>
                                     </select>
                                 </div>
 		    				</div>

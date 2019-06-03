@@ -18,8 +18,8 @@
 								<th>Matricula</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
-								<th>Correo Electrónico</th>
 								<th>Carrera</th>
+								<th>Tutor</th>
 								<th>Editar</th>
 								<th>Borrar</th>
 							</tr>
@@ -29,8 +29,8 @@
 								<th>Matricula</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
-								<th>Correo Electrónico</th>
 								<th>Carrera</th>
+								<th>Tutor</th>
 								<th>Editar</th>
 								<th>Borrar</th>
 							</tr>

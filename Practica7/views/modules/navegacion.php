@@ -10,7 +10,7 @@
 			<div class="control-wrap js__drop_down">
 				<i class="fa fa-caret-down js__drop_down_button"></i>
 				<div class="control-list">
-					<div class="control-item"><a href="index.php?action=logout"><i class="fa fa-sign-out"></i> Log out</a></div>
+					<div class="control-item"><a href="index.php?action=salir"><i class="fa fa-sign-out"></i> Log out</a></div>
 				</div>
 				<!-- /.control-list -->
 			</div>
@@ -41,6 +41,36 @@
 					</ul>
 					<!-- /.sub-menu js__content -->
 				</li>
+				<li>
+					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon fa fa-flag"></i><span>Carreras</span><span class="menu-arrow fa fa-angle-down"></span></a>
+					<ul class="sub-menu js__content">
+						<li><a href="index.php?action=createCarrera">Agregar Carrera</a></li>
+						<li><a href="index.php?action=listaCarrera">Lista de Carrera</a></li>
+					</ul>
+					<!-- /.sub-menu js__content -->
+				</li>
+				<li>
+					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon fa fa-flag"></i><span>Materias</span><span class="menu-arrow fa fa-angle-down"></span></a>
+					<ul class="sub-menu js__content">
+						<li><a href="index.php?action=createMateria">Crear Materia</a></li>
+						<li><a href="index.php?action=listaMateria">Lista de Materias</a></li>
+					</ul>
+					<!-- /.sub-menu js__content -->
+				</li>
+				<li>
+					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon fa fa-flag"></i><span>Grupos</span><span class="menu-arrow fa fa-angle-down"></span></a>
+					<ul class="sub-menu js__content">
+						<li><a href="index.php?action=createGrupo">Crear Grupo</a></li>
+						<li><a href="index.php?action=listaGrupo">Lista de Grupos</a></li>
+					</ul>
+					<!-- /.sub-menu js__content -->
+				<!-- </li>
+				<li>
+					<a class="waves-effect parent-item js__control" href="index.php?action=tutorias"><i class="menu-icon fa fa-flag"></i><span>Tutorias</span></a>
+				</li>
+				<li>
+					<a class="waves-effect" href="index.php?action=reportes"><i class="menu-icon fa fa-flag"></i><span>Reportes</span></a>
+				</li> -->
 			</ul>
 		</div>
 		<!-- /.navigation -->

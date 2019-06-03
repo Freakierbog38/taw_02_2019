@@ -1,6 +1,7 @@
 <?php
 $t = new Datos();
 $carreras = $t->vistaTablaModel('carrera');
+$maestros = $t->vistaTablaModel('maestros');
 $datosController = $_GET["id"];
 $r = Datos::unRegistroModel("alumnos", $datosController);
 ?>
@@ -33,12 +34,6 @@ $r = Datos::unRegistroModel("alumnos", $datosController);
 									<input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="<?= $r["apellidos"] ?>">
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="email" class="col-sm-3 control-label">Correo Electrónico</label>
-								<div class="col-sm-5">
-									<input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico" value="<?= $r["email"] ?>">
-								</div>
-							</div>
                             <div class="form-group">
                                 <label for="carrera" class="col-sm-3 control-label">Carrera</label>
                                 <div class="col-sm-5">
@@ -46,6 +41,17 @@ $r = Datos::unRegistroModel("alumnos", $datosController);
                                         <option value="">Seleccione...</option>
 										<?php foreach($carreras as $i => $item){ ?>
 											<option value="<?php echo $item["id"]; ?>" <?php if($r["carrera"]==$item["id"]) echo "selected"; ?>><?php echo $item["nombre"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+		    				</div>
+							<div class="form-group">
+                                <label for="tutor" class="col-sm-3 control-label">Tutor</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="tutor" name="tutor">
+                                        <option value="">Seleccione...</option>
+										<?php foreach($maestros as $i => $item){ ?>
+                                        <option value="<?php echo $item["id"]; ?>" <?php if($r["tutor"]==$item["id"]) echo "selected"; ?>><?php echo ($item["nombre"]." ".$item["apellidos"]); ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>

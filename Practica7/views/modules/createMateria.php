@@ -1,7 +1,8 @@
 <?php
 $t = new Datos();
-$carreras = $t->vistaTablaModel('carrera');
+$materias = $t->vistaTablaModel('materias_catalogo');
 $maestros = $t->vistaTablaModel('maestros');
+$grupos = $t->vistaTablaModel('grupos');
 ?>
 <div id="wrapper">
 	<div class="main-content">
@@ -9,46 +10,39 @@ $maestros = $t->vistaTablaModel('maestros');
             <!-- /.col-xs-12 -->
             <div class="col-lg-12 col-xs-12">
 				<div class="box-content card white">
-					<h4 class="box-title">Agregar Alumno</h4>
+					<h4 class="box-title">Agregar Materia</h4>
 					<!-- /.box-title -->
 					<div class="card-content">
 						<form class="form-horizontal" method="post">
-							<div class="form-group">
-								<label for="matricula" class="col-sm-3 control-label">Matrícula</label>
-								<div class="col-sm-5">
-									<input type="text" class="form-control" id="matricula" name="matricula" placeholder="Matrícula">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="nombre" class="col-sm-3 control-label">Nombre</label>
-								<div class="col-sm-5">
-									<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="apellidos" class="col-sm-3 control-label">Apellidos</label>
-								<div class="col-sm-5">
-									<input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos">
-								</div>
-							</div>
                             <div class="form-group">
-                                <label for="carrera" class="col-sm-3 control-label">Carrera</label>
+                                <label for="materia" class="col-sm-3 control-label">Materia</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="carrera" name="carrera">
+                                    <select class="form-control" id="materia" name="materia">
                                         <option value="">Seleccione...</option>
-										<?php foreach($carreras as $i => $item){ ?>
+										<?php foreach($materias as $i => $item){ ?>
+                                        <option value="<?php echo $item["id"]; ?>"><?= $item["nombre"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+		    				</div>
+                            <div class="form-group">
+                                <label for="grupo" class="col-sm-3 control-label">Grupo</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="grupo" name="grupo">
+                                        <option value="">Seleccione...</option>
+										<?php foreach($grupos as $i => $item){ ?>
                                         <option value="<?php echo $item["id"]; ?>"><?php echo $item["nombre"]; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
 		    				</div>
-							<div class="form-group">
-                                <label for="tutor" class="col-sm-3 control-label">Tutor</label>
+                            <div class="form-group">
+                                <label for="maestro" class="col-sm-3 control-label">Maestro</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="tutor" name="tutor">
+                                    <select class="form-control" id="maestro" name="maestro">
                                         <option value="">Seleccione...</option>
-										<?php foreach($carreras as $i => $item){ ?>
-                                        <option value="<?php echo $item["id"]; ?>"><?php echo ($item["nombre"]." ".$item["apellidos"]); ?></option>
+										<?php foreach($maestros as $i => $item){ ?>
+                                        <option value="<?php echo $item["id"]; ?>"><?= $item["nombre"]." ".$item["apellidos"]; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -62,7 +56,7 @@ $maestros = $t->vistaTablaModel('maestros');
 						</form>
 						<?php
 						$registro = new MvcController();
-						$registro -> registroAlumnoController();
+						$registro -> registroMateriaController();
 						?>
 					</div>
 					<!-- /.card-content -->

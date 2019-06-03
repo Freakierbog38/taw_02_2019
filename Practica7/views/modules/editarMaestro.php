@@ -10,7 +10,7 @@ $r = Datos::unRegistroModel("maestros", $datosController);
             <!-- /.col-xs-12 -->
             <div class="col-lg-12 col-xs-12">
 				<div class="box-content card white">
-					<h4 class="box-title">Agregar Maestro</h4>
+					<h4 class="box-title">Editar Maestro</h4>
 					<!-- /.box-title -->
 					<div class="card-content">
 						<form class="form-horizontal" method="post">
@@ -39,6 +39,12 @@ $r = Datos::unRegistroModel("maestros", $datosController);
 									<input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico" value="<?= $r["email"] ?>">
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="pass" class="col-sm-3 control-label">Correo Contraseña</label>
+								<div class="col-sm-5">
+									<input type="password" class="form-control" id="pass" name="pass" placeholder="Contraseña" value="<?= $r["password"] ?>">
+								</div>
+							</div>
                             <div class="form-group">
                                 <label for="carrera" class="col-sm-3 control-label">Carrera</label>
                                 <div class="col-sm-5">
@@ -47,6 +53,15 @@ $r = Datos::unRegistroModel("maestros", $datosController);
 										<?php foreach($carreras as $i => $item){ ?>
                                         <option value="<?php echo $item["id"]; ?>" <?php if($r["carrera"]==$item["id"]) echo "selected"; ?>><?php echo $item["nombre"]; ?></option>
                                         <?php } ?>
+                                    </select>
+                                </div>
+		    				</div>
+							<div class="form-group">
+                                <label for="nivel" class="col-sm-3 control-label">Nivel</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" id="nivel" name="nivel">
+										<option value="0" <?php if($r["nivel"]==0) echo "selected"; ?>>Maestro</option>
+										<option value="1" <?php if($r["nivel"]==1) echo "selected"; ?>>SuperAdmin</option>
                                     </select>
                                 </div>
 		    				</div>
