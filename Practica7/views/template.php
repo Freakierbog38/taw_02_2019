@@ -1,13 +1,11 @@
 <?php
 	// Inicia la sesión, necesario para usar las utilidades de SESSION
-	// session_start();
-	// if(!$_SESSION["validar"]){
+	session_start();
 
-	// 	header("location:login.php");
-	
-	// 	exit();
-	
-	// }
+	if(!$_SESSION["validar"]){
+		header("location:login.php");
+		exit();
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">

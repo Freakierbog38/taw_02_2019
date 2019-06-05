@@ -25,6 +25,10 @@
 			<h5 class="title">Navegación</h5>
 			<!-- /.title -->
 			<ul class="menu js__accordion">
+				<?php
+				if(isset($_COOKIE['nivel'])){
+					if($_COOKIE['nivel']=="1"){
+				?>
 				<li>
 					<a class="waves-effect parent-item js__control" href="#"><i class="menu-icon fa fa-flag"></i><span>Alumnos</span><span class="menu-arrow fa fa-angle-down"></span></a>
 					<ul class="sub-menu js__content">
@@ -64,13 +68,23 @@
 						<li><a href="index.php?action=listaGrupo">Lista de Grupos</a></li>
 					</ul>
 					<!-- /.sub-menu js__content -->
-				<!-- </li>
+				</li>
 				<li>
-					<a class="waves-effect parent-item js__control" href="index.php?action=tutorias"><i class="menu-icon fa fa-flag"></i><span>Tutorias</span></a>
+					<a class="waves-effect" href="index.php?action=tutorias"><i class="menu-icon fa fa-flag"></i><span>Tutorias</span></a>
 				</li>
 				<li>
 					<a class="waves-effect" href="index.php?action=reportes"><i class="menu-icon fa fa-flag"></i><span>Reportes</span></a>
-				</li> -->
+				</li>
+					<?php }
+						else{ ?>
+				<li>
+					<a class="waves-effect" href="index.php?action=tutorias"><i class="menu-icon fa fa-flag"></i><span>Tutorias</span></a>
+				</li>
+				<li>
+					<a class="waves-effect" href="index.php?action=reportes"><i class="menu-icon fa fa-flag"></i><span>Reportes</span></a>
+				</li>
+						<?php }
+						}?>
 			</ul>
 		</div>
 		<!-- /.navigation -->

@@ -46,7 +46,7 @@ class MvcController{
 			if($respuesta["email"] == $_POST["emailIngreso"] && $respuesta["password"] == $_POST["passwordIngreso"]){
 				session_start();
 				$_SESSION["validar"] = true;
-				$_SESSION["num_empleado"] = $respuesta["num_empleado"];
+				$_SESSION["num_empleado"] = $respuesta["id"];
 				setcookie("nivel",$respuesta["nivel"], time() + (86400 * 30), "/");
 				header("location:index.php?action=tutorias");
 			}
@@ -611,7 +611,7 @@ class MvcController{
 	#Genera la interfaz que muestra en una tabla todos los registros almacenados
 	public function vistaTutoriasController(){
 		if($_COOKIE['nivel']==1)
-			$respuesta = Datos::vistaTutoriasModel("sesion_tutoria");
+			$respuesta = Datos::vistaTablaModel("sesion_tutoria");
 		else
 			$respuesta = Datos::vistaTutoriasNivelModel("sesion_tutoria",$_SESSION["num_empleado"]);		
 		foreach($respuesta as $row => $item){
@@ -682,34 +682,34 @@ class MvcController{
 	#Genera la interfaz base para el registro de las tutorias
 	public function registroBaseTutoriaController(){
 		if($_COOKIE['nivel']==1)
-			$respuesta_alumnos = Datos::obtenerAlumnosModel("alumnos");
+			$respuesta_alumnos = Datos::vistaTablaModel("alumnos");
 		else
 			$respuesta_alumnos = Datos::obtenerAlumnosNivelModel("alumnos",$_SESSION['num_empleado']);
 
 		$st_alumnos="";
 		for($i=0;$i<sizeof($respuesta_alumnos);$i++)
-			$st_alumnos=$st_alumnos."<option value='".$respuesta_alumnos[$i]['matricula']."'>".$respuesta_alumnos[$i]['nombre']."</option>";
+			$st_alumnos=$st_alumnos."<option value='".$respuesta_alumnos[$i]['id']."'>".$respuesta_alumnos[$i]['nombre']."</option>";
 
 
 		echo'
 			<input type="hidden" id="hid" name="hid"></input>
-			<table>
+			<table class="table table-striped table-bordered display">
 				<tr>
 					<td>
 						<h4>Detalles en la tutoria</h4>
 						<input type="hidden" name="num_maestro" value="'.$_SESSION['num_empleado'].'" required>
-						<label for="fecha">Fecha:</label>
-						<input type="date" name="fecha" required>
-						<label for="hora">Hora:</label>
-						<input type="time" name="hora" required>
-						<label for="tipo">Tipo:</label>
-						<select name="tipo" required>
+						<label for="fecha" class="control-label">Fecha:</label>
+						<input type="date" class="form-control" name="fecha" required>
+						<label for="hora" class="control-label">Hora:</label>
+						<input type="time" class="form-control" name="hora" required>
+						<label for="tipo" class="control-label">Tipo:</label>
+						<select name="tipo" class="form-control" required>
 							<option value="Grupal">Grupal</option>
 							<option value="Individual">Individual</option>
 						 </select>
-						<label for="Tema">Tema:</label>
-						<input type="text" name="tema" required>
-						<button class="small success" onclick="sendData();" type="submit">Registrar</button>
+						<label for="Tema" class="control-label">Tema:</label>
+						<input type="text" class="form-control" name="tema" required>
+						<button class="btn btn-primary btn-sm waves-effect waves-light" onclick="sendData();" type="submit">Registrar</button>
 						
 					</td>
 					<td>
@@ -724,7 +724,7 @@ class MvcController{
 								 <br><br>
 							</td>
 							 <td>
-							 	<button type="button" class="small success" onclick="addAlumno()">Agregar Alumno</button>
+							 	<button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="addAlumno()">Agregar Alumno</button>
 							 </td>
 						</tr>
 						<table>
@@ -791,45 +791,46 @@ class MvcController{
 		$datosController = $_GET["id"];
 		$respuesta = Datos::editarTutoriaModel($datosController, "sesion_tutoria");
 		
-		$respuesta_alumnos = Datos::obtenerAlumnosModel("alumnos");
+		//$respuesta_alumnos = Datos::obtenerAlumnosModel("alumnos");
+		$respuesta_alumnos = Datos::vistaTablaModel("alumnos");
 		$respuesta_alumnosTutoria = Datos::obtenerAlumnosTutoriaModel($datosController,"sesion_alumnos");
 
 		$st_alumnos="";
 		for($i=0;$i<sizeof($respuesta_alumnos);$i++)
-			$st_alumnos=$st_alumnos."<option value='".$respuesta_alumnos[$i]['matricula']."'>".$respuesta_alumnos[$i]['nombre']."</option>";
+			$st_alumnos=$st_alumnos."<option value='".$respuesta_alumnos[$i]['id']."'>".$respuesta_alumnos[$i]['nombre']."</option>";
 
 		echo'
 			<input type="hidden" id="hid" name="hid"></input>
-			<table>
+			<table class="table table-striped table-bordered display">
 				<tr>
 					<td>
 						<h4>Detalles en la tutoria</h4>
-						<input type="hidden" value="'.$respuesta["num_maestro"].'" name="num_maestro">
-						<label for="fecha">Fecha:</label>
-						<input type="date" value="'.$respuesta["fecha"].'" name="fecha" required>
-						<label for="hora">Hora:</label>
-						<input type="time" value="'.$respuesta["hora"].'" name="hora" required>
-						<label for="tipo">Tipo:</label>
-						<select id="tipos" name="tipo" required>
+						<input type="hidden" value="'.$respuesta["maestro"].'" name="num_maestro">
+						<label for="fecha" class="control-label">Fecha:</label>
+						<input type="date" class="form-control" value="'.$respuesta["fecha"].'" name="fecha" required>
+						<label for="hora" class="control-label">Hora:</label>
+						<input type="time" class="form-control" value="'.$respuesta["hora"].'" name="hora" required>
+						<label for="tipo" class="control-label">Tipo:</label>
+						<select id="tipos" class="form-control" name="tipo" required>
 							<option value="Grupal">Grupal</option>
 							<option value="Individual">Individual</option>
 						 </select>
-						 <label for="tema">Tema:</label>
-						 <input type="text" value="'.$respuesta["tema"].'" name="tema" required>
-						 <button class="small success" onclick="sendData();" type="submit">Actualizar</button>
+						 <label for="tema" class="control-label">Tema:</label>
+						 <input type="text" class="form-control" value="'.$respuesta["tema"].'" name="tema" required>
+						 <button class="btn btn-primary btn-sm waves-effect waves-light" onclick="sendData();" type="submit">Actualizar</button>
 					<td>
 						<h4>Alumnos en la tutoria</h4>
-						<table>
+						<table class="table table-striped table-bordered display">
 							<tr>
 								<td>
-								 <label for="alumno">Nombre del Alumno:</label>
-								 <select name="alumno" class="js-example-basic-multiple" id="alumno">
+								 <label for="alumno" class="control-label">Nombre del Alumno:</label>
+								 <select name="alumno" class="js-example-basic-multiple" id="alumno" class="form-control">
 								 	'.$st_alumnos.'
 								 </select>
 								 <br><br>
 							</td>
 							 <td>
-							 	<button type="button" class="small success" onclick="addAlumno()">Agregar Alumno</button>
+							 	<button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="addAlumno()">Agregar Alumno</button>
 							 </td>
 						</tr>
 						<table>
@@ -939,15 +940,15 @@ class MvcController{
 	#Genera la tabla de los reportes de maestros
 	public function vistaReporteMaestrosController(){
 
-		$respuesta = Datos::vistaMaestrosModel("maestros");
+		$respuesta = Datos::vistaTablaModel("maestros");;
 
 		foreach($respuesta as $row => $item){
 			$item["nivel"]=$item["nivel"]==1?"SuperAdmin":"Maestro";
 		echo'<tr>
-				<td>'.$item["num_empleado"].'</td>
+				<td>'.$item["numero"].'</td>
 				<td>'.$item["nombre"].'</td>
 				<td>'.$item["email"].'</td>
-				<td>'.$item["nombre_carrera"].'</td>
+				<td>'.$item["carrera"].'</td>
 				<td>'.$item["nivel"].'</td>
 			</tr>';
 		}
@@ -966,7 +967,7 @@ class MvcController{
 	#Genera la tabla de los reportes de alumnos
 	public function vistaReporteAlumnosController(){
 
-		$respuesta = Datos::vistaAlumnoModel("alumnos");
+		$respuesta = Datos::vistaTablaModel("alumnos");
 
 		foreach($respuesta as $row => $item){
 		echo'<tr>
@@ -990,7 +991,7 @@ class MvcController{
 	#Genera la tabla de los reportes de tutorias
 	public function vistaReporteTutoriasController(){
 		if($_COOKIE['nivel']==1)
-			$respuesta = Datos::vistaTutoriasModel("sesion_tutoria");
+			$respuesta = Datos::vistaTablaModel("sesion_tutoria");
 		else
 			$respuesta = Datos::vistaTutoriasNivelModel("sesion_tutoria",$_SESSION["num_empleado"]);		
 		foreach($respuesta as $row => $item){

@@ -421,7 +421,7 @@ class Datos extends Conexion{
 	#Muestra solo las tutorias que ha hecho el empleado, con el numero de maestro ingresado
 	public function vistaTutoriasNivelModel($tabla, $id){
 
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla where num_maestro=:num_maestro");	
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla where maestro=:num_maestro");	
 		$stmt->bindParam(":num_maestro", $id, PDO::PARAM_STR);
 		$stmt->execute();
 
@@ -465,13 +465,13 @@ class Datos extends Conexion{
 	#-------------------------------------
 	public function registroTutoriaModel($datosModel, $tabla){
 
-		$stmt1 = Conexion::conectar()->prepare("INSERT INTO $tabla (fecha, hora, tipo, tema, num_maestro) VALUES (:fecha,:hora,:tipo,:tema,:num_maestro)");	
+		$stmt1 = Conexion::conectar()->prepare("INSERT INTO $tabla (fecha, hora, tipo, tema, maestro) VALUES (:fecha,:hora,:tipo,:tema,:num_maestro)");	
 		
 		$stmt1->bindParam(":fecha", $datosModel["fecha"], PDO::PARAM_STR);
 		$stmt1->bindParam(":hora", $datosModel["hora"], PDO::PARAM_STR);
 		$stmt1->bindParam(":tipo", $datosModel["tipo"], PDO::PARAM_STR);
 		$stmt1->bindParam(":tema", $datosModel["tema"], PDO::PARAM_STR);
-		$stmt1->bindParam(":num_maestro", $datosModel["num_maestro"], PDO::PARAM_STR);
+		$stmt1->bindParam(":num_maestro", $datosModel["num_maestro"], PDO::PARAM_INT);
 		
 		var_dump($datosModel);
 
@@ -503,7 +503,7 @@ class Datos extends Conexion{
 		$datosModel_array =  explode(",",$datosModel);
 		
 		for($i=0;$i<sizeof($datosModel_array);$i++){
-			$stmt1 = Conexion::conectar()->prepare("INSERT INTO $tabla (matricula_alumno, id_sesion) VALUES (:matricula_alumno,:id_sesion)");	
+			$stmt1 = Conexion::conectar()->prepare("INSERT INTO $tabla (alumno, id_sesion) VALUES (:matricula_alumno,:id_sesion)");	
 			$stmt1->bindParam(":matricula_alumno", $datosModel_array[$i], PDO::PARAM_STR);
 			$stmt1->bindParam(":id_sesion", $id_sesion, PDO::PARAM_INT);
 
@@ -522,7 +522,7 @@ class Datos extends Conexion{
 	#-------------------------------------
 	public function editarTutoriaModel($datosModel, $tabla){
 
-		$stmt = Conexion::conectar()->prepare("SELECT id, hora, fecha, tipo, tema, num_maestro FROM $tabla WHERE id = :id");
+		$stmt = Conexion::conectar()->prepare("SELECT id, hora, fecha, tipo, tema, maestro FROM $tabla WHERE id = :id");
 		$stmt->bindParam(":id", $datosModel, PDO::PARAM_INT);	
 		$stmt->execute();
 
@@ -536,7 +536,7 @@ class Datos extends Conexion{
 	#-------------------------------------
 	public function obtenerAlumnosTutoriaModel($datosModel,$tabla){
 
-		$stmt = Conexion::conectar()->prepare("SELECT st.matricula_alumno, a.nombre FROM $tabla as st INNER JOIN alumnos AS a ON a.matricula=st.matricula_alumno WHERE st.id_sesion=:id_sesion");
+		$stmt = Conexion::conectar()->prepare("SELECT st.alumno, a.nombre FROM $tabla as st INNER JOIN alumnos AS a ON a.id=st.alumno WHERE st.id_sesion=:id_sesion");
 		$stmt->bindParam(":id_sesion", $datosModel, PDO::PARAM_INT);	
 		$stmt->execute();
 
@@ -570,12 +570,23 @@ class Datos extends Conexion{
 	#Obtiene el email, contrasena, numero de empleado y nivel de los maestros.
 	public function ingresoMaestroModel($datosModel, $tabla){
 
-		$stmt = Conexion::conectar()->prepare("SELECT email, password, num_empleado, nivel FROM $tabla WHERE email = :email");	
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE email = :email");	
 		$stmt->bindParam(":email", $datosModel["email"], PDO::PARAM_STR);
 		$stmt->execute();
 
 		return $stmt->fetch();
 		$stmt->close();
+	}
+
+	#OBTENER ALUMNOS NIVEL
+	#-------------------------------------
+	#Obtiene los alumnos que tienen a cierto tutor
+	public function obtenerAlumnosNivelModel($tabla, $id){
+		$stmt = Conexion::conectar()->prepare("SELECT id, nombre FROM $tabla WHERE tutor=:id_tutor");
+		$stmt->bindParam(":id_tutor", $id, PDO::PARAM_INT);
+		$stmt->execute();
+
+		return $stmt->fetchAll();
 	}
 
 }
