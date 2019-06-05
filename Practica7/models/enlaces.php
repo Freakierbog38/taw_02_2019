@@ -13,7 +13,7 @@ class Paginas{
 
 		else if($enlaces == "index"){
 
-			$module =  "views/modules/listaAlumno.php";
+			$module =  "views/modules/tutorias.php";
 		
 		}
 
@@ -53,7 +53,7 @@ class Paginas{
 
 		else{
 
-			$module =  "views/modules/listaMaestro.php";
+			$module =  "views/modules/tutorias.php";
 
 		}
 		
